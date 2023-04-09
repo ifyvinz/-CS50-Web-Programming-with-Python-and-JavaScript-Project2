@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+
+  Create a new Auction
+{%endblock %}
+
+{% block body %}
+   <div class="form-group">
+        <form  action="{% url 'bidding' %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+            {{form.amount}}
+            <input type="submit" value= "Place Your Bid" class="btn btn-light">
+         </form>
+   </div>
+  
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+
+  Watch List
+{% endblock %}
+
+{% block body %}
+   
+   {% for watch in watchList %}
+      
+      <div class="container">
+        <ul>
+          <a href="{% url 'listing' watch.listing.first.id %}"><li><h6>{{watch.listing.first.title}}</h6></li>
+            <img src="{{watch.listing.first.image.url}}" width="150" height="200">
+          </a>
+          
+      </ul>
+      </div>
+    {% endfor %}
+{% endblock %}

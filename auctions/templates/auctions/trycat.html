@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <br><br>
+    <div class="row">
+
+      {% for listing in listings %}
+       <div class="col-sm-6">
+            <a href="{% url 'listing' listing.id %}" class="card-link">
+              <h3>{{listing.title}}</h3>
+              {% if listing.image %}
+               <img src="{{listing.image.url}}" width="500" height="600">
+              {% else %}
+                 <img src="auctions/static/auctions/images/defaultImage.png" alt="No image" width="550" height="600">
+              {% endif %}
+            </a>
+              <p>discription: {{listing.discription |slice:":100"}}</p>
+              <p>Current Price: ${{listing.current_price}}</p>
+              
+            
+            <br>
+       </div>
+    {% endfor %}
+    </div>
+
+    
+{% endblock %}

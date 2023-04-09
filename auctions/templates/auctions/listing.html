@@ -1,0 +1,119 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+   <div class="container">
+    
+    <br><br>
+        <div class="form-group">
+           {% if winner_message %}
+               <div class="alert alert-success" role="alert">
+                   {{winner_message}}
+              </div><!--  success end of div -->
+           {% else %}
+               <div class="alert alert-info">
+                   <span>There is currntly no bid yet </span>
+               </div>
+           {% endif %}
+
+            <div class="form-group">
+                {% if error_message %}
+                    <div class="alert alert-danger" role="alert">
+                        {{error_message}}
+                    </div><!--  danger end of div -->
+                {% endif %}
+    
+       <div >
+           <div class="card list-details col-lg-4 col-sm-12">
+            <h3>{{listing.title}}</h3>
+            {% if request.user.is_authenticated %}
+            <div>
+              <form  action="{% url 'betweenWatchList' listing.id %}" method="POST" enctype="multipart/form-data">
+                 {% csrf_token %}
+                 <input type="submit" value="Watch List" class="btn btn-light">
+  
+              </form>
+             </div>
+            {% endif %}
+            {% if listing.image %}
+               <img class="img-fluid" src="{{listing.image.url}}" width="600" height="600">
+            {% else %}
+              <img  src="{% static 'auctions/images/defaultImage.png' %}" alt="No image" id="product-image" width="600" height="600">
+            {% endif %}
+            
+            <div class="card-body col-lg-11">
+                <h6>Discription:</h6> <p>{{listing.discription}}</p>
+                <div class="jumbotron">
+                  <h5>Current Price: ${{listing.current_price}}</h5>
+                  <h6>Starting Bid: ${{listing.start_bid}}</h6>
+                  <h6>Listed By: {{listing.user |upper}}</h6>
+                  <h6>Listed On: {{listing.listed_date}}</h6>
+                </div>
+             </div>
+           </div>
+           
+            
+            <br>
+       </div>
+       {% if request.user.is_authenticated %}
+         
+            {{listing.bids.bidder}}{{request.user.bids.bidder}}
+            {% if listing.bids.bidder %}
+              <span>Your bid is the current bid.</span>
+              {{listing.bids.all.count}}
+            {% endif %}
+            
+            {% if listing.close == False %}
+               <form  action="{% url 'listing' listing.id %}" method="POST" enctype="multipart/form-data">
+                   <div class="form-group">
+                       {% csrf_token %}
+                        <h6>{{form}}</h6>
+                       <input type="submit" value= "Place Your Bid" class="btn btn-primary">
+                   </div>
+              
+                </form>
+            {% endif %}
+            
+            
+             
+          </div>
+
+          {% if request.user == listing.user %}
+             <div>
+               <form action="{% url 'close' listing.id %}" method="POST" >
+                   {% csrf_token %}
+                     <input type="checkbox", name="close" value="True">
+                     <input type="submit" value= "Close Bid" class="btn btn-light">
+              </form>
+             </div>
+             <br>
+          {% endif %}
+       {% endif %}
+      
+       
+
+      
+    <br>
+    <div>
+        <h4>{{listing.comments.all.count}} Comment(s) made</h4>
+        {% for comment in comments %}
+         <h5>Comment by: {{comment.user}}</h5>
+         <h6>Date: {{comment.date}}</h6> 
+         <strong>Title: {{comment.title}}</strong>
+         <p>{{comment.message}}</p>
+         <hr>  
+        {% endfor %}
+    </div>
+
+    {% if request.user.is_authenticated %}
+       <a href="{% url 'add_comment' listing.id %}">
+          <h5>Leave Comment</h5>
+       </a>
+    {% else %}
+      <a href="{% url 'login' %}">
+        <strong>Loging to comment</strong>
+      </a> 
+    {% endif %}
+   </div> 
+
+    
+{% endblock %}

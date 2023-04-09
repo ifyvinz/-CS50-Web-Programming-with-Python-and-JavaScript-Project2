@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+
+  Add Comment
+{%endblock %}
+
+{% block body %}
+
+  <div class="form-group">
+    <form action="{% url 'add_comment' listing.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" class="btn btn-light">
+    </form>
+  </div>
+  <a href="{% url 'listing' listing.id %}"><h5>Back</h5></a>
+{% endblock %}
+
+

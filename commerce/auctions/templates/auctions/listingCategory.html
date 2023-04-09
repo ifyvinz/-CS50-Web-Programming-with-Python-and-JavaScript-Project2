@@ -1,0 +1,60 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+ <div class="container py-5">
+    <div class="row justify-content-center mb-3">
+      <div class="col-md-12 col-xl-10">
+         <div class="card shadow-0 border rounded-3">
+            <div class="card-body">
+              
+                {% for listing in listings %}
+                   {% if listing.close == False %}
+                     <div class="row cat-row">
+                           {% if listing.image %}
+                             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                                 <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                                    <img src="{{listing.image.url}}" id="product-image"> 
+                                  </div><!-- end bg image div-->
+                               </div><!-- end of col-md-12 col-lg-3 div-->
+                           {% else %}  
+                              <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                                  <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                                    <img  src="{% static 'auctions/images/defaultImage.png' %}" alt="No image" id="product-image" width="300" height="300">
+                                  </div><!-- end bg image div-->
+                               </div><!-- end of col-md-12 col-lg-3 div-->
+                            {% endif %}
+                     <div class="col-md-6 col-lg-6 col-xl-6 list-cat-title">
+                        <h4>{{listing.title}}</h4>
+                        <h5 class="mb-3">Bid: ${{listing.start_bid}}</h5>
+                     </div><!-- end of col-md-6 col-lg-6 col-xl-6 div-->
+                     <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                        <div class="d-flex flex-row align-items-center mb-1">
+                          <div class="d-flex flex-column mt-4">
+                            <a href="{% url 'listing' listing.id %}" class="text-reset">
+                              <div class="btn btn-primary btn-sm" type="button">Details</div>
+                            </a>
+                            <form  action="{% url 'betweenWatchList' listing.id %}" method="POST" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <input type="submit" value="Add to wishlist" class="btn btn-outline-primary btn-sm mt-2">
+               
+                            </form>
+                           
+                            
+                            
+                            
+                          </div><!-- end of d-flex flex-column mt-4 div-->
+                        </div><!-- end of "d-flex flex-row align-items-center div-->
+                     </div><!-- end of col-md-6 col-lg-3 col-xl-3 border-sm-start-none div-->
+                    </div><!-- end of row div-->
+                   {% endif %}
+                 {% endfor %}
+                 
+              
+            </div><!-- end of card-body div-->
+         </div><!-- end of card shadow-0 div-->
+      </div><!-- end of col-md-12 col-xl-10 div-->
+    </div><!-- end of row justify-content-center div-->
+ </div><!-- end of container div-->
+{% endblock %}

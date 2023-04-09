@@ -1,0 +1,37 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+    
+    <div class="text-center container py-5">
+      <h4 class="mt-4 mb-5"><strong>All Products</strong></h4>
+       <div class="row">
+        {% for listing in auctions %}
+        <div class="col-lg-4 col-md-12 mb-4">
+           <div class="card">
+              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light" data-mdb-ripple-color="light">
+                {% if listing.image %}
+                  <img class="img-fluid w-100" src="{{listing.image.url}}"  id="product-image" />
+                {% else %}
+                  <img  src="{% static 'auctions/images/defaultImage.png' %}" alt="No image" id="product-image" width="300" height="300">
+                {% endif %}
+              
+              </div><!-- end of bg-image hover-zoom div -->
+              <div class="card-body">
+                <a href="{% url 'listing' listing.id %}" class="text-reset">
+                  <h5 class="card-title mb-3">{{listing.title}}</h5>
+                </a>
+
+                <a href="{% url 'categories' %}" class="text-reset">
+                  <p>{{listing.category}}</p>
+                </a>
+                <h5 class="mb-3">Bid: ${{listing.start_bid}}</h5>
+                <h6 class="mb-3">Listed By: {{listing.user| upper}}</h6>
+              </div><!-- end of card-body div -->
+           </div><!-- end of card div -->
+        </div><!-- end of col-lg-4 col-md-12 mb-4 div -->
+     {% endfor %}
+       </div>
+    </div>
+
+  
+{% endblock %}
